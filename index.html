@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVG Test</title>
+    <style>
+      #rubbermaid {
+        height: 70px;
+        min-height: 70px;
+        margin: 0;
+        padding: 0;
+      }
+
+      #rubbermaid div {
+        width: 20px;
+        display: inline-block;
+        height: 70px;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        text-align: center;
+      }
+
+      @keyframes fall-and-fade {
+        0% {
+          transform: translateY(0px) scale(0);
+          opacity: 0;
+        }
+        20% {
+          transform: translateY(12.6px) scale(1);
+          opacity: 1;
+        }
+        80% {
+          transform: translateY(50.4px) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(63px) scale(0);
+          opacity: 0;
+        }
+      }
+
+      .bubble {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        filter: drop-shadow(0 0 2px #aaa);
+        animation: fall-and-fade 3000ms linear both;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="rubbermaid"></div>
+    <script lang="js" async="false">
+        function createBubble(size) {
+          const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          svg.setAttribute("width", size);
+          svg.setAttribute("height", size);
+          svg.setAttribute("class", "bubble");
+
+          const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          const center = (parseInt(size) / 2).toString();
+          circle.setAttribute("cx", center);
+          circle.setAttribute("cy", center);
+          circle.setAttribute("r", center);
+          circle.setAttribute("fill", "#777");
+
+          svg.appendChild(circle);
+
+          return svg;
+        }
+
+        function columnize(divId) {
+          const container = document.getElementById(divId);
+          for (let i = 0; i < 7; i++) {
+            const columnName = `bubbleColumn-${i.toString()}`;
+            const column = document.createElement("div");
+            column.setAttribute("id", columnName);
+            container.appendChild(column);
+          }
+        }
+
+        function randBool() {
+          return Math.floor(Math.random() * 2); // Zero or One
+        }
+
+        // const container = document.getElementById("rubbermaid");
+        columnize("rubbermaid");
+        const columns = document.getElementById("rubbermaid").childNodes;
+        if (columns.length) {
+        setInterval(() => {
+          columns.forEach((c, index) => {
+            if (randBool()) {
+              const bubble = randBool() ? createBubble("7") : createBubble("4");
+              bubble.style.animationDelay = `${index * 70}ms`;
+              bubble.addEventListener("animationend", () => bubble.remove());
+              c.appendChild(bubble);
+            }
+          });
+        }, 630)
+      }
+    </script>
+  </body>
+</html>
