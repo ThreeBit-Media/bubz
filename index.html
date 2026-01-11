@@ -12,7 +12,7 @@
         padding: 0;
       }
 
-      #rubbermaid div {
+      #rubbermaid .bubbleColumn {
         width: 20px;
         display: inline-block;
         height: 70px;
@@ -20,6 +20,15 @@
         padding: 0;
         position: relative;
         text-align: center;
+      }
+
+      .loadingText {
+        width: 20px;
+        display: inline-block;
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #777;
+        font-size: smaller;
       }
 
       @keyframes fall-and-fade {
@@ -47,7 +56,6 @@
         left: 0;
         right: 0;
         margin: 0 auto;
-        filter: drop-shadow(0 0 2px #aaa);
         animation: fall-and-fade 3000ms linear both;
       }
     </style>
@@ -55,18 +63,22 @@
   <body>
     <div id="rubbermaid"></div>
     <script lang="js" async="false">
-        function createBubble(size) {
+      const baseColor = '#777';
+      const glowColor = lightenColor(baseColor, 0.6);
+
+        function createBubble(size, color, glowColor) {
           const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
           svg.setAttribute("width", size);
           svg.setAttribute("height", size);
           svg.setAttribute("class", "bubble");
+          svg.style.filter = `drop-shadow(0 0 2px ${glowColor})`;
 
           const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
           const center = (parseInt(size) / 2).toString();
           circle.setAttribute("cx", center);
           circle.setAttribute("cy", center);
           circle.setAttribute("r", center);
-          circle.setAttribute("fill", "#777");
+          circle.setAttribute("fill", color);
 
           svg.appendChild(circle);
 
@@ -75,11 +87,24 @@
 
         function columnize(divId) {
           const container = document.getElementById(divId);
-          for (let i = 0; i < 7; i++) {
-            const columnName = `bubbleColumn-${i.toString()}`;
-            const column = document.createElement("div");
-            column.setAttribute("id", columnName);
-            container.appendChild(column);
+          container.setAttribute("style", "width: 140px");
+          // Add two rows inside the container
+          for (let r = 0; r < 2; r++) {
+            const row = document.createElement("div");
+            row.setAttribute("style", "width: 140px;");
+            container.appendChild(row);
+            for (let c = 0; c < 7; c++) {
+              const columnName = `bubbleColumn-${r.toString()}-${c.toString()}`;
+              const column = document.createElement("div");
+              column.setAttribute("id", columnName);
+              if (r === 0) {
+                column.classList.add("bubbleColumn");
+              } else {
+                column.innerHTML = "LOADING"[c];
+                column.classList.add("loadingText");
+              }
+              row.appendChild(column);
+            }
           }
         }
 
@@ -87,14 +112,21 @@
           return Math.floor(Math.random() * 2); // Zero or One
         }
 
-        // const container = document.getElementById("rubbermaid");
+        function lightenColor(hex, percent) {
+          const num = parseInt(hex.replace('#', ''), 16);
+          const r = Math.min(255, (num >> 16) + Math.round(255 * percent));
+          const g = Math.min(255, ((num >> 8) & 0x00FF) + Math.round(255 * percent));
+          const b = Math.min(255, (num & 0x0000FF) + Math.round(255 * percent));
+          return `rgb(${r}, ${g}, ${b})`;
+        }
+
         columnize("rubbermaid");
-        const columns = document.getElementById("rubbermaid").childNodes;
+        const columns = document.getElementById("rubbermaid").childNodes[0].childNodes;
         if (columns.length) {
         setInterval(() => {
           columns.forEach((c, index) => {
             if (randBool()) {
-              const bubble = randBool() ? createBubble("7") : createBubble("4");
+              const bubble = randBool() ? createBubble("7", baseColor, glowColor) : createBubble("4", baseColor, glowColor);
               bubble.style.animationDelay = `${index * 70}ms`;
               bubble.addEventListener("animationend", () => bubble.remove());
               c.appendChild(bubble);
