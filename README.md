@@ -17,7 +17,7 @@ A customizable, self-contained loading indicator web component with falling bubb
 
 ## Demo
 
-**[View Live Demo](https://threebit.github.io/bubz/demo.html)** _(Update with your actual GitHub Pages URL)_
+**[View Live Demo](https://threebit-media.github.io/bubz/)**
 
 ## Quick Start
 
@@ -31,10 +31,10 @@ A customizable, self-contained loading indicator web component with falling bubb
 <bubz-indicator></bubz-indicator>
 ```
 
-### Option 2: Direct Link
+### Option 2: Direct Link (CDN)
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/YOUR_USERNAME/bubz@main/bubz.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ThreeBit-Media/bubz@main/bubz.min.js"></script>
 <bubz-indicator text="LOADING"></bubz-indicator>
 ```
 
