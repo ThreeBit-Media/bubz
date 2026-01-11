@@ -107,6 +107,11 @@
         A self-contained, customizable loading indicator with falling bubble animations. Everything is packaged in a
         single JavaScript file with no external dependencies or CSS files needed.
       </p>
+      <p>
+        <strong>Two versions available:</strong><br>
+        • <code>bubz.js</code> (10 KB) - Readable source for development and debugging<br>
+        • <code>bubz.min.js</code> (5.8 KB) - Minified version for production use
+      </p>
     </div>
 
     <!-- Basic Usage -->
@@ -114,7 +119,12 @@
       <h2>1. Basic Usage</h2>
       <p>Simply include the script and add the custom element:</p>
       <pre>
+&lt;!-- For development --&gt;
 &lt;script src="bubz.js"&gt;&lt;/script&gt;
+
+&lt;!-- For production (recommended) --&gt;
+&lt;script src="bubz.min.js"&gt;&lt;/script&gt;
+
 &lt;bubz-indicator&gt;&lt;/bubz-indicator&gt;</pre
       >
 
