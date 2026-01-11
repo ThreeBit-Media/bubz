@@ -1,5 +1,9 @@
 /**
  * Bubz - A customizable loading indicator web component
+ * @version 1.0.0
+ * @author Bill Knechtel
+ * @license MIT
+ * @copyright 2026 ThreeBit Media
  *
  * Usage:
  *   <bubz-indicator text="LOADING" color="#777"></bubz-indicator>
