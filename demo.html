@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bubz Indicator - Demo</title>
+    <script src="bubz.js"></script>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      .demo-section {
+        background: white;
+        margin: 20px 0;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: #333;
+        margin-top: 0;
+      }
+
+      h2 {
+        color: #555;
+        border-bottom: 2px solid #777;
+        padding-bottom: 10px;
+      }
+
+      .container {
+        border: 2px dashed #ccc;
+        min-height: 150px;
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fafafa;
+        border-radius: 4px;
+      }
+
+      .small-container {
+        min-height: 100px;
+      }
+
+      .controls {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f9f9f9;
+        border-radius: 4px;
+      }
+
+      button {
+        background: #777;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      button:hover {
+        background: #555;
+      }
+
+      button:active {
+        background: #333;
+      }
+
+      code {
+        background: #f4f4f4;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+      }
+
+      pre {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+
+      .info {
+        background: #e3f2fd;
+        padding: 15px;
+        border-left: 4px solid #2196f3;
+        margin: 15px 0;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Bubz Indicator - Demo & Documentation</h1>
+
+    <div class="info">
+      <strong>What is Bubz?</strong>
+      <p>
+        A self-contained, customizable loading indicator with falling bubble animations. Everything is packaged in a
+        single JavaScript file with no external dependencies or CSS files needed.
+      </p>
+    </div>
+
+    <!-- Basic Usage -->
+    <div class="demo-section">
+      <h2>1. Basic Usage</h2>
+      <p>Simply include the script and add the custom element:</p>
+      <pre>
+&lt;script src="bubz.js"&gt;&lt;/script&gt;
+&lt;bubz-indicator&gt;&lt;/bubz-indicator&gt;</pre
+      >
+
+      <div class="container">
+        <bubz-indicator></bubz-indicator>
+      </div>
+    </div>
+
+    <!-- Custom Text -->
+    <div class="demo-section">
+      <h2>2. Custom Text</h2>
+      <p>Change the text using the <code>text</code> attribute:</p>
+      <pre>&lt;bubz-indicator text="WAIT"&gt;&lt;/bubz-indicator&gt;</pre>
+
+      <div class="container">
+        <bubz-indicator text="WAIT"></bubz-indicator>
+      </div>
+    </div>
+
+    <!-- Custom Color -->
+    <div class="demo-section">
+      <h2>3. Custom Color</h2>
+      <p>Change colors using the <code>color</code> attribute:</p>
+      <pre>&lt;bubz-indicator text="PROCESSING" color="#4CAF50"&gt;&lt;/bubz-indicator&gt;</pre>
+
+      <div class="container">
+        <bubz-indicator text="PROCESSING" color="#4CAF50"></bubz-indicator>
+      </div>
+    </div>
+
+    <!-- Custom Size -->
+    <div class="demo-section">
+      <h2>4. Custom Size</h2>
+      <p>Adjust size using the <code>size</code> attribute (default is 1):</p>
+      <pre>
+&lt;bubz-indicator text="SMALL" size="0.6"&gt;&lt;/bubz-indicator&gt;
+&lt;bubz-indicator text="LARGE" size="1.5"&gt;&lt;/bubz-indicator&gt;</pre
+      >
+
+      <div class="container small-container">
+        <bubz-indicator text="SMALL" size="0.6"></bubz-indicator>
+      </div>
+
+      <div class="container">
+        <bubz-indicator text="LARGE" size="1.5" color="#9C27B0"></bubz-indicator>
+      </div>
+    </div>
+
+    <!-- Custom Speed -->
+    <div class="demo-section">
+      <h2>5. Custom Speed</h2>
+      <p>Adjust animation speed using the <code>speed</code> attribute (higher = slower):</p>
+      <pre>&lt;bubz-indicator text="FAST" speed="0.5" color="#FF5722"&gt;&lt;/bubz-indicator&gt;</pre>
+
+      <div class="container">
+        <bubz-indicator text="FAST" speed="0.5" color="#FF5722"></bubz-indicator>
+      </div>
+    </div>
+
+    <!-- Show/Hide Methods -->
+    <div class="demo-section">
+      <h2>6. Show/Hide Methods</h2>
+      <p>Control visibility programmatically using <code>.show()</code> and <code>.hide()</code> methods:</p>
+      <pre>
+const loader = document.querySelector('#controlled-loader');
+loader.hide(); // Hide with fade out
+loader.show(); // Show with fade in
+
+// With callbacks
+loader.hide(() => console.log('Hidden!'));
+loader.show(() => console.log('Visible!'));</pre
+      >
+
+      <div class="controls">
+        <button onclick="document.querySelector('#controlled-loader').show()">Show</button>
+        <button onclick="document.querySelector('#controlled-loader').hide()">Hide</button>
+        <button onclick="toggleLoader()">Toggle</button>
+      </div>
+
+      <div class="container">
+        <bubz-indicator id="controlled-loader" text="CONTROL ME" color="#2196F3"></bubz-indicator>
+      </div>
+    </div>
+
+    <!-- Dynamic Updates -->
+    <div class="demo-section">
+      <h2>7. Dynamic Updates</h2>
+      <p>Change properties at runtime:</p>
+      <pre>
+const loader = document.querySelector('#dynamic-loader');
+loader.text = 'NEW TEXT';
+loader.color = '#FF9800';
+loader.size = 1.2;</pre
+      >
+
+      <div class="controls">
+        <button onclick="changeText()">Change Text</button>
+        <button onclick="changeColor()">Change Color</button>
+        <button onclick="changeSize()">Change Size</button>
+      </div>
+
+      <div class="container">
+        <bubz-indicator id="dynamic-loader" text="DYNAMIC" color="#607D8B"></bubz-indicator>
+      </div>
+    </div>
+
+    <!-- Multiple Instances -->
+    <div class="demo-section">
+      <h2>8. Multiple Instances</h2>
+      <p>You can have multiple loaders on the same page with different configurations:</p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px">
+        <div class="container small-container">
+          <bubz-indicator text="ONE" color="#F44336" size="0.7"></bubz-indicator>
+        </div>
+        <div class="container small-container">
+          <bubz-indicator text="TWO" color="#2196F3" size="0.8"></bubz-indicator>
+        </div>
+        <div class="container small-container">
+          <bubz-indicator text="THREE" color="#4CAF50" size="0.9"></bubz-indicator>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full Page Overlay -->
+    <div class="demo-section">
+      <h2>9. Full Page Overlay</h2>
+      <p>Create a full-page loading overlay:</p>
+      <pre>
+&lt;div id="overlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; z-index: 9999;"&gt;
+  &lt;bubz-indicator text="LOADING" color="#fff"&gt;&lt;/bubz-indicator&gt;
+&lt;/div&gt;</pre
+      >
+
+      <div class="controls">
+        <button onclick="showOverlay()">Show Overlay</button>
+      </div>
+    </div>
+
+    <!-- Full page overlay -->
+    <div
+      id="overlay"
+      style="
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <bubz-indicator text="LOADING" color="#fff" size="1.3"></bubz-indicator>
+    </div>
+
+    <!-- API Reference -->
+    <div class="demo-section">
+      <h2>API Reference</h2>
+
+      <h3>Attributes</h3>
+      <table style="width: 100%; border-collapse: collapse">
+        <thead>
+          <tr style="background: #f5f5f5; text-align: left">
+            <th style="padding: 10px; border: 1px solid #ddd">Attribute</th>
+            <th style="padding: 10px; border: 1px solid #ddd">Type</th>
+            <th style="padding: 10px; border: 1px solid #ddd">Default</th>
+            <th style="padding: 10px; border: 1px solid #ddd">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd"><code>text</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd">String</td>
+            <td style="padding: 10px; border: 1px solid #ddd">"LOADING"</td>
+            <td style="padding: 10px; border: 1px solid #ddd">The text to display</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd"><code>color</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd">String</td>
+            <td style="padding: 10px; border: 1px solid #ddd">"#777"</td>
+            <td style="padding: 10px; border: 1px solid #ddd">Base color (hex format)</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd"><code>size</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd">Number</td>
+            <td style="padding: 10px; border: 1px solid #ddd">1</td>
+            <td style="padding: 10px; border: 1px solid #ddd">Size multiplier</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd"><code>speed</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd">Number</td>
+            <td style="padding: 10px; border: 1px solid #ddd">1</td>
+            <td style="padding: 10px; border: 1px solid #ddd">Speed multiplier (higher = slower)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Methods</h3>
+      <ul>
+        <li><code>show(callback)</code> - Show the indicator with fade-in effect</li>
+        <li><code>hide(callback)</code> - Hide the indicator with fade-out effect</li>
+        <li><code>isVisible()</code> - Returns true if visible</li>
+      </ul>
+
+      <h3>Properties</h3>
+      <p>All attributes can also be accessed as JavaScript properties:</p>
+      <pre>
+loader.text = "NEW TEXT";
+loader.color = "#FF0000";
+loader.size = 1.5;
+loader.speed = 0.8;</pre
+      >
+    </div>
+
+    <script>
+      function toggleLoader() {
+        const loader = document.querySelector("#controlled-loader");
+        if (loader.isVisible()) {
+          loader.hide();
+        } else {
+          loader.show();
+        }
+      }
+
+      const texts = ["DYNAMIC", "CHANGED", "UPDATED", "MODIFIED"];
+      let textIndex = 0;
+      function changeText() {
+        const loader = document.querySelector("#dynamic-loader");
+        textIndex = (textIndex + 1) % texts.length;
+        loader.text = texts[textIndex];
+      }
+
+      const colors = ["#607D8B", "#E91E63", "#00BCD4", "#FF9800", "#8BC34A"];
+      let colorIndex = 0;
+      function changeColor() {
+        const loader = document.querySelector("#dynamic-loader");
+        colorIndex = (colorIndex + 1) % colors.length;
+        loader.color = colors[colorIndex];
+      }
+
+      const sizes = [0.7, 1, 1.3, 0.9];
+      let sizeIndex = 1;
+      function changeSize() {
+        const loader = document.querySelector("#dynamic-loader");
+        sizeIndex = (sizeIndex + 1) % sizes.length;
+        loader.size = sizes[sizeIndex];
+      }
+
+      function showOverlay() {
+        const overlay = document.getElementById("overlay");
+        const loader = overlay.querySelector("bubz-indicator");
+
+        overlay.style.display = "flex";
+        loader.show(); // Start the animation
+
+        // Hide after 3 seconds
+        setTimeout(() => {
+          loader.hide(); // Stop the animation
+          overlay.style.display = "none";
+        }, 5000);
+      }
+    </script>
+  </body>
+</html>

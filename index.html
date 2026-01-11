@@ -3,151 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SVG Test</title>
+    <title>Bubz - Loading Indicator</title>
+    <script src="bubz.js"></script>
     <style>
-      #rubbermaid {
-        height: 70px;
-        min-height: 70px;
+      body {
         margin: 0;
-        padding: 0;
-      }
-
-      #rubbermaid .bubbleColumn {
-        width: 20px;
-        display: inline-block;
-        height: 70px;
-        margin: 0;
-        padding: 0;
-        position: relative;
-        text-align: center;
-      }
-
-      .loadingText {
-        width: 20px;
-        display: inline-block;
-        text-align: center;
+        padding: 20px;
         font-family: Arial, Helvetica, sans-serif;
-        color: #777;
-        font-size: smaller;
-        animation: gentle-bounce 2100ms ease-in-out infinite;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       }
 
-      @keyframes gentle-bounce {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-1.5px);
-        }
-      }
-
-      @keyframes fall-and-fade {
-        0% {
-          transform: translateY(0px) scale(0);
-          opacity: 0;
-        }
-        20% {
-          transform: translateY(12.6px) scale(1);
-          opacity: 1;
-        }
-        80% {
-          transform: translateY(50.4px) scale(1);
-          opacity: 1;
-        }
-        100% {
-          transform: translateY(63px) scale(0);
-          opacity: 0;
-        }
-      }
-
-      .bubble {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
-        animation: fall-and-fade 3000ms linear both;
+      .container {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
       }
     </style>
   </head>
   <body>
-    <div id="rubbermaid"></div>
-    <script lang="js" async="false">
-      const baseColor = '#777';
-      const glowColor = lightenColor(baseColor, 0.6);
-
-        function createBubble(size, color, glowColor) {
-          const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-          svg.setAttribute("width", size);
-          svg.setAttribute("height", size);
-          svg.setAttribute("class", "bubble");
-          svg.style.filter = `drop-shadow(0 0 2px ${glowColor})`;
-
-          const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-          const center = (parseInt(size) / 2).toString();
-          circle.setAttribute("cx", center);
-          circle.setAttribute("cy", center);
-          circle.setAttribute("r", center);
-          circle.setAttribute("fill", color);
-
-          svg.appendChild(circle);
-
-          return svg;
-        }
-
-        function columnize(divId, phrase = "LOADING") {
-          const container = document.getElementById(divId);
-          const phraseLength = phrase.length;
-          const width = phraseLength * 20;
-          container.setAttribute("style", `width: ${width}px`);
-          // Add two rows inside the container
-          for (let r = 0; r < 2; r++) {
-            const row = document.createElement("div");
-            row.setAttribute("style", `width: ${width}px;`);
-            container.appendChild(row);
-            for (let c = 0; c < phraseLength; c++) {
-              const columnName = `bubbleColumn-${r.toString()}-${c.toString()}`;
-              const column = document.createElement("div");
-              column.setAttribute("id", columnName);
-              if (r === 0) {
-                column.classList.add("bubbleColumn");
-              } else {
-                column.innerHTML = phrase[c];
-                column.classList.add("loadingText");
-                column.style.animationDelay = `${c * 300}ms`;
-              }
-              row.appendChild(column);
-            }
-          }
-        }
-
-        function randBool() {
-          return Math.floor(Math.random() * 2); // Zero or One
-        }
-
-        function lightenColor(hex, percent) {
-          const num = parseInt(hex.replace('#', ''), 16);
-          const r = Math.min(255, (num >> 16) + Math.round(255 * percent));
-          const g = Math.min(255, ((num >> 8) & 0x00FF) + Math.round(255 * percent));
-          const b = Math.min(255, (num & 0x0000FF) + Math.round(255 * percent));
-          return `rgb(${r}, ${g}, ${b})`;
-        }
-
-        columnize("rubbermaid");
-        const columns = document.getElementById("rubbermaid").childNodes[0].childNodes;
-        if (columns.length) {
-        setInterval(() => {
-          columns.forEach((c, index) => {
-            if (randBool()) {
-              const bubble = randBool() ? createBubble("7", baseColor, glowColor) : createBubble("4", baseColor, glowColor);
-              bubble.style.animationDelay = `${index * 70}ms`;
-              bubble.addEventListener("animationend", () => bubble.remove());
-              c.appendChild(bubble);
-            }
-          });
-        }, 630)
-      }
-    </script>
+    <div class="container">
+      <bubz-indicator></bubz-indicator>
+    </div>
   </body>
 </html>
