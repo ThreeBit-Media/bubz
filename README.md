@@ -145,7 +145,8 @@ Works in all modern browsers that support:
 
 - `bubz.js` (10 KB) - Readable source for development
 - `bubz.min.js` (5.8 KB) - Minified for production
-- `demo.html` - Interactive demo and documentation
+- `index.html` - Interactive demo and documentation
+- `simpledemo.html` - Minimal usage example
 - `LICENSE` - MIT License
 
 ## License

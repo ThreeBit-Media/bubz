@@ -108,14 +108,14 @@
         single JavaScript file with no external dependencies or CSS files needed.
       </p>
       <p>
-        <strong>Two versions available:</strong><br>
-        • <code>bubz.js</code> (10 KB) - Readable source for development and debugging<br>
+        <strong>Two versions available:</strong><br />
+        • <code>bubz.js</code> (10 KB) - Readable source for development and debugging<br />
         • <code>bubz.min.js</code> (5.8 KB) - Minified version for production use
       </p>
       <p>
-        <strong>Links:</strong><br>
-        • <a href="simpledemo.html" target="_blank">View Standalone Demo</a> (single example vs. feature demos below)<br>
-        • <a href="https://github.com/ThreeBit-Media/bubz" target="_blank">GitHub Repository</a><br>
+        <strong>Links:</strong><br />
+        • <a href="simpledemo.html" target="_blank">View Standalone Demo</a> (single example vs. feature demos below)<br />
+        • <a href="https://github.com/ThreeBit-Media/bubz" target="_blank">GitHub Repository</a><br />
         • CDN: <code>https://cdn.jsdelivr.net/gh/ThreeBit-Media/bubz@main/bubz.min.js</code>
       </p>
     </div>
@@ -195,6 +195,10 @@
       <h2>6. Show/Hide Methods</h2>
       <p>Control visibility programmatically using <code>.show()</code> and <code>.hide()</code> methods:</p>
       <pre>
+// Instantiate like this in the HTML:
+// &lt;bubz-indicator id="controlled-loader" text="CONTROL ME" color="#2196F3"&gt;&lt;/bubz-indicator&gt;
+//
+// Then in a &lt;script&gt; ...
 const loader = document.querySelector('#controlled-loader');
 loader.hide(); // Hide with fade out
 loader.show(); // Show with fade in
