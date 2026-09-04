@@ -29,7 +29,7 @@ class BubzIndicator extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["text", "color", "size", "speed"];
+    return ["text", "color", "size", "speed", "seed"];
   }
 
   /**
@@ -127,6 +127,31 @@ class BubzIndicator extends HTMLElement {
   }
 
   /**
+   * Whether to start with an animation already in progress.
+   *
+   * By default the indicator begins empty: the first bubbles are spawned one
+   * interval later and fade in over the first fifth of their fall, and each
+   * letter's bounce is staggered forward by 300ms. An indicator that is only
+   * on screen for a second therefore shows almost none of its animation.
+   *
+   * With `seed` set, bubbles and letters start partway through their own
+   * cycles, so the indicator is fully in motion on its first painted frame.
+   * Boolean attribute: present means on, `seed="false"` means off.
+   */
+  get seed() {
+    const value = this.getAttribute("seed");
+    return value !== null && value !== "false";
+  }
+
+  set seed(value) {
+    if (value) {
+      this.setAttribute("seed", "");
+    } else {
+      this.removeAttribute("seed");
+    }
+  }
+
+  /**
    * Render the loading indicator
    */
   render() {
@@ -134,6 +159,7 @@ class BubzIndicator extends HTMLElement {
     const baseColor = this.color;
     const size = this.size;
     const speed = this.speed;
+    const seeded = this.seed;
     const glowColor = this.lightenColor(baseColor, 0.6);
 
     const columnHeight = 70 * size;
@@ -247,7 +273,11 @@ class BubzIndicator extends HTMLElement {
       const textColumn = document.createElement("div");
       textColumn.innerHTML = text[i];
       textColumn.classList.add("loading-text");
-      textColumn.style.animationDelay = `${i * 300 * speed}ms`;
+      // A negative delay starts the bounce partway through its cycle, so every
+      // letter is already moving on the first frame instead of the last one
+      // waiting text.length * 300ms to begin.
+      const bounceDelay = i * 300 * speed;
+      textColumn.style.animationDelay = `${seeded ? -bounceDelay : bounceDelay}ms`;
       textRow.appendChild(textColumn);
     }
 
@@ -267,17 +297,51 @@ class BubzIndicator extends HTMLElement {
     const columns = this.shadowRoot.querySelectorAll(".bubble-column");
     if (!columns.length) return;
 
+    if (this.seed) this.primeBubbles(columns);
+
     this._intervalId = setInterval(() => {
       columns.forEach((column, index) => {
         if (this.randBool()) {
-          const bubbleSize = this.randBool() ? 7 * this._size : 4 * this._size;
-          const bubble = this.createBubble(bubbleSize, this._baseColor, this._glowColor);
-          bubble.style.animationDelay = `${index * 70 * this._speed}ms`;
-          bubble.addEventListener("animationend", () => bubble.remove());
-          column.appendChild(bubble);
+          this.addBubble(column, index * 70 * this._speed);
         }
       });
     }, 630 * this._speed);
+  }
+
+  /**
+   * Fill the columns with bubbles that are already falling.
+   *
+   * Each seeded bubble gets a negative animation delay, which starts its fall
+   * partway through rather than at the beginning, so the field is established
+   * on the first painted frame instead of roughly a second later.
+   *
+   * @param {NodeList} columns - The bubble columns to seed
+   */
+  primeBubbles(columns) {
+    const duration = 3000 * this._speed;
+    columns.forEach((column) => {
+      const count = 1 + this.randBool();
+      for (let i = 0; i < count; i++) {
+        // 10%-90% through the fall: far enough in to have faded up, far enough
+        // from the end to still be on screen.
+        const progress = 0.1 + Math.random() * 0.8;
+        this.addBubble(column, -Math.round(progress * duration));
+      }
+    });
+  }
+
+  /**
+   * Create a bubble in a column and remove it when its fall finishes.
+   *
+   * @param {HTMLElement} column - The column to add the bubble to
+   * @param {number} delayMs - Animation delay; negative starts mid-fall
+   */
+  addBubble(column, delayMs) {
+    const bubbleSize = this.randBool() ? 7 * this._size : 4 * this._size;
+    const bubble = this.createBubble(bubbleSize, this._baseColor, this._glowColor);
+    bubble.style.animationDelay = `${delayMs}ms`;
+    bubble.addEventListener("animationend", () => bubble.remove());
+    column.appendChild(bubble);
   }
 
   /**
