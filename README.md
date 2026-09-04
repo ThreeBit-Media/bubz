@@ -8,6 +8,7 @@ A customizable, self-contained loading indicator web component with falling bubb
 ## Features
 
 - Fully customizable (text, color, size, speed)
+- Optional seeded start, for loaders that are only on screen briefly
 - Single file, no dependencies
 - Auto-centers in any container
 - Smart visibility management (pauses when hidden)
@@ -70,6 +71,22 @@ A customizable, self-contained loading indicator web component with falling bubb
 <bubz-indicator text="LOADING" speed="0.5"></bubz-indicator>
 ```
 
+### Seeded start
+
+By default the indicator builds up from empty: the first bubbles appear one
+interval (630ms) after it starts and fade in over the first fifth of their
+fall, and each letter's bounce is staggered 300ms after the one before it. For
+a loader that stays on screen for several seconds this reads as the animation
+starting; for one that appears for about a second, most of it never happens.
+
+Add `seed` to start mid-animation instead. Bubbles are placed partway through
+their fall and letters partway through their bounce, using negative animation
+delays, so the indicator is fully in motion on its first painted frame:
+
+```html
+<bubz-indicator text="LOADING" seed></bubz-indicator>
+```
+
 ## JavaScript API
 
 ### Show/Hide
@@ -110,6 +127,7 @@ loader.speed = 0.8;
 | `color`   | String | `"#777"`    | Base color (hex format)              |
 | `size`    | Number | `1`         | Size multiplier                      |
 | `speed`   | Number | `1`         | Speed multiplier (higher = slower)   |
+| `seed`    | Boolean| absent      | Start already in motion (see below)  |
 
 ## Methods
 
