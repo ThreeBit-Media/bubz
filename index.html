@@ -290,6 +290,34 @@ loader.size = 1.2;</pre
       <bubz-indicator text="LOADING" color="#fff" size="1.3"></bubz-indicator>
     </div>
 
+    <!-- Seeded Start -->
+    <div class="demo-section">
+      <h2>10. Seeded Start</h2>
+      <p>
+        By default the indicator builds up from empty: the first bubbles are spawned
+        630ms in and fade up over the first fifth of their fall, and each letter's bounce
+        is staggered 300ms behind the one before it. An indicator that is only on screen
+        for a second or two therefore shows almost none of its animation.
+      </p>
+      <p>
+        Add <code>seed</code> to start mid-animation instead. Press restart and watch the
+        first moment of each: the seeded one is already in full flight.
+      </p>
+      <pre>
+&lt;bubz-indicator text="DEFAULT"&gt;&lt;/bubz-indicator&gt;
+&lt;bubz-indicator text="SEEDED" seed&gt;&lt;/bubz-indicator&gt;</pre
+      >
+
+      <div class="controls">
+        <button onclick="restartSeedDemo()">Restart both</button>
+      </div>
+
+      <div class="container" style="display: flex; gap: 90px; justify-content: center; flex-wrap: wrap">
+        <div id="seed-demo-default"><bubz-indicator text="DEFAULT" color="#607D8B"></bubz-indicator></div>
+        <div id="seed-demo-seeded"><bubz-indicator text="SEEDED" color="#4CAF50" seed></bubz-indicator></div>
+      </div>
+    </div>
+
     <!-- API Reference -->
     <div class="demo-section">
       <h2>API Reference</h2>
@@ -328,6 +356,14 @@ loader.size = 1.2;</pre
             <td style="padding: 10px; border: 1px solid #ddd">Number</td>
             <td style="padding: 10px; border: 1px solid #ddd">1</td>
             <td style="padding: 10px; border: 1px solid #ddd">Speed multiplier (higher = slower)</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd"><code>seed</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd">Boolean</td>
+            <td style="padding: 10px; border: 1px solid #ddd">absent</td>
+            <td style="padding: 10px; border: 1px solid #ddd">
+              Start already in motion, for indicators shown only briefly
+            </td>
           </tr>
         </tbody>
       </table>
@@ -381,6 +417,21 @@ loader.speed = 0.8;</pre
         const loader = document.querySelector("#dynamic-loader");
         sizeIndex = (sizeIndex + 1) % sizes.length;
         loader.size = sizes[sizeIndex];
+      }
+
+      // Re-create both indicators so their first frame can be compared side by side.
+      function restartSeedDemo() {
+        const make = (id, text, color, seed) => {
+          const host = document.getElementById(id);
+          host.innerHTML = "";
+          const el = document.createElement("bubz-indicator");
+          el.setAttribute("text", text);
+          el.setAttribute("color", color);
+          if (seed) el.setAttribute("seed", "");
+          host.appendChild(el);
+        };
+        make("seed-demo-default", "DEFAULT", "#607D8B", false);
+        make("seed-demo-seeded", "SEEDED", "#4CAF50", true);
       }
 
       function showOverlay() {
